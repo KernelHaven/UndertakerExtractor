@@ -1,5 +1,5 @@
 # UndertakerExtractor
-[Undertaker v1.6.1](http://vamos.informatik.uni-erlangen.de/trac/undertaker/))
+[Undertaker v1.6.1](http://vamos.informatik.uni-erlangen.de/trac/undertaker/)
 -based code extractor for KernelHaven
 
 ## Capabilities
