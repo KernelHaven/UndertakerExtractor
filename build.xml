@@ -71,7 +71,7 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${reports.xml.dir}" />
 		<mkdir dir="${reports.html.dir}" />
-		<get src="http://147.172.160.32:8080/job/KernelHaven/lastSuccessfulBuild/artifact/build/jar/kernelhaven.jar" dest="${lib.dir}/kernelhaven.jar" />
+		<get src="http://jenkins.sse.uni-hildesheim.de/job/KernelHaven_Infrastructure/lastSuccessfulBuild/artifact/build/jar/kernelhaven.jar" dest="${lib.dir}/kernelhaven.jar" />
 	</target>
 
 
