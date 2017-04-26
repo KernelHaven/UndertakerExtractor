@@ -21,6 +21,73 @@ import de.uni_hildesheim.sse.kernel_haven.util.logic.parser.VariableCache;
 public class CsvToAstConverter {
 
     private static final String DELIMITER = ";";
+
+    private VariableCache cache = new VariableCache();
+    
+    private Parser<Formula> parser = new Parser<>(new CStyleBooleanGrammar(cache));
+    
+    private boolean fuzzyParsing;
+    
+    /**
+     * Creates a converter, that reads CSV output from pilztaker and converts it into {@link SourceFile}s.
+     * 
+     * @param fuzzyParsing Whether parsing of boolean formulas should be strict or fuzzy.
+     */
+    public CsvToAstConverter(boolean fuzzyParsing) {
+        this.fuzzyParsing = fuzzyParsing;
+    }
+    
+    /**
+     * Tries to fuzzy parse the boolean formula. This should be used only if normal parsing was
+     * not successful.
+     * 
+     * @param formula The string to parse.
+     * @return The resulting parsed formula. Never <code>null</code>.
+     * 
+     * @throws ExpressionFormatException If the string still cannot be parsed.
+     */
+    private Formula fuzzyParse(String formula) throws ExpressionFormatException {
+        
+        formula = formula.replaceAll("\\s*[<>=]{1,2}\\s*", "_");
+        
+        Formula result = null;
+        try {
+            result = parser.parse(formula);
+        } finally {
+            cache.clear();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Parses the given string into a formula. If fuzzyParsing is true, then this
+     * tries some heuristics to parse strings that otherwise wouldn't be parseable. 
+     * 
+     * @param formula The string to parse.
+     * @return The parsed formula. Never <code>null</code>.
+     * 
+     * @throws ExpressionFormatException If the string cannot be parsed.
+     */
+    private Formula tryParse(String formula) throws ExpressionFormatException {
+        Formula result = null;
+        try {
+            result = parser.parse(formula);
+            cache.clear();
+            
+        } catch (ExpressionFormatException e) {
+            cache.clear();
+            if (!fuzzyParsing) {
+                throw e;
+            }
+            try {
+                result = fuzzyParse(formula);
+            } catch (ExpressionFormatException e2) {
+                throw e;
+            }
+        }
+        return result;
+    }
     
     /**
      * Converts the given CSV into a {@link SourceFile}.
@@ -34,8 +101,6 @@ public class CsvToAstConverter {
     public SourceFile convert(File filePath, String csv) throws FormatException {
         SourceFile result = new SourceFile(filePath);
         
-        VariableCache cache = new VariableCache();
-        Parser<Formula> parser = new Parser<>(new CStyleBooleanGrammar(cache));
         Stack<UndertakerBlock> stack = new Stack<>();
         
         try {
@@ -68,12 +133,10 @@ public class CsvToAstConverter {
                 
                 Formula condition = null;
                 if (!parts[6].isEmpty()) {
-                    condition = parser.parse(parts[6]);
-                    cache.clear();
+                    condition = tryParse(parts[6]);
                 }
                 
-                Formula pc = parser.parse(parts[7]);
-                cache.clear();
+                Formula pc = tryParse(parts[7]);
 
                 while (stack.size() > nestingDepth) {
                     stack.pop();

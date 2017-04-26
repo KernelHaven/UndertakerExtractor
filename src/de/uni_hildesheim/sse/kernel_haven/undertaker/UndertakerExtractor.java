@@ -44,6 +44,8 @@ public class UndertakerExtractor implements ICodeModelExtractor, Runnable {
     private int numberOfThreads;
     
     private BlockingQueue<File> filesToParse;
+    
+    private boolean fuzzyBooleanParsing;
 
     /**
      * Creates a new Undertaker wrapper.
@@ -73,6 +75,8 @@ public class UndertakerExtractor implements ICodeModelExtractor, Runnable {
         } catch (NumberFormatException e) {
             throw new SetUpException(e);
         }
+        
+        fuzzyBooleanParsing = Boolean.parseBoolean(config.getProperty("code.extractor.fuzzy_parsing", "false"));
     }
 
     @Override
@@ -173,7 +177,7 @@ public class UndertakerExtractor implements ICodeModelExtractor, Runnable {
         String csv = wrapper.runOnFile(file);
 
         if (csv != null && !isStopRequested()) {
-            CsvToAstConverter converter = new CsvToAstConverter();
+            CsvToAstConverter converter = new CsvToAstConverter(fuzzyBooleanParsing);
             SourceFile result = converter.convert(file, csv);
 
             if (!isStopRequested()) {

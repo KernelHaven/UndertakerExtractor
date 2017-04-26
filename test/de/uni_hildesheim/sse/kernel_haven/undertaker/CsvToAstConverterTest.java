@@ -35,7 +35,7 @@ public class CsvToAstConverterTest {
         String csv = "test.c;2;4;if;0;2;CONFIG_A;CONFIG_A\n"
                 + "test.c;6;12;if;0;6;CONFIG_B && !CONFIG_C;CONFIG_B && !CONFIG_C";
         
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         SourceFile result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
@@ -91,7 +91,7 @@ public class CsvToAstConverterTest {
                 + "test.c;5;6;if;2;5;CONFIG_D;CONFIG_D && ((CONFIG_C) && (CONFIG_A))\n"
                 + "test.c;51;52;if;1;51;CONFIG_E;CONFIG_E && CONFIG_A\n";
         
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         SourceFile result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
@@ -157,7 +157,7 @@ public class CsvToAstConverterTest {
                 + "test.c;2;3;elseif;0;1;CONFIG_B;CONFIG_B && !CONFIG_A\n"
                 + "test.c;4;5;else;0;1;;!CONFIG_B && !CONFIG_A\n";
         
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         SourceFile result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
@@ -198,7 +198,7 @@ public class CsvToAstConverterTest {
     @Test(expected = FormatException.class)
     public void testInvalidCsv() throws FormatException {
         String csv = "this isn;t csv";
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         converter.convert(new File("test.c"), csv);
     }
     
@@ -209,7 +209,7 @@ public class CsvToAstConverterTest {
     @Test(expected = FormatException.class)
     public void testInvalidFilename() throws FormatException {
         String csv = "not_test.c;1;2;if;0;1;CONFIG_A;CONFIG_A\n";
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         converter.convert(new File("test.c"), csv);
     }
     
@@ -220,7 +220,7 @@ public class CsvToAstConverterTest {
     @Test(expected = FormatException.class)
     public void testInvalidNumber() throws FormatException {
         String csv = "test.c;1;not_a_number;if;0;1;CONFIG_A;CONFIG_A\n";
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         converter.convert(new File("test.c"), csv);
     }
     
@@ -231,7 +231,7 @@ public class CsvToAstConverterTest {
     @Test(expected = FormatException.class)
     public void testInvalidType() throws FormatException {
         String csv = "test.c;1;5;wtf;0;1;CONFIG_A;CONFIG_A\n";
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         converter.convert(new File("test.c"), csv);
     }
     
@@ -242,8 +242,35 @@ public class CsvToAstConverterTest {
     @Test(expected = FormatException.class)
     public void testInvalidPc() throws FormatException {
         String csv = "test.c;1;5;if;0;1;CONFIG_A;NOT_A_BOOL ||\n";
-        CsvToAstConverter converter = new CsvToAstConverter();
+        CsvToAstConverter converter = new CsvToAstConverter(false);
         converter.convert(new File("test.c"), csv);
+    }
+    
+    /**
+     * Tests whether fuzzy parsing works correctly.
+     * 
+     * @throws FormatException unwanted.
+     */
+    @Test
+    public void testFuzzyParsing() throws FormatException {
+        String csv = "test.c;1;2;if;0;1;__STDC_VERSION__ >= 201112L;A";
+        
+        CsvToAstConverter converter = new CsvToAstConverter(true);
+        SourceFile result = converter.convert(new File("test.c"), csv);
+        
+        assertThat(result.getPath(), is(new File("test.c")));
+        assertThat(result.getTopBlockCount(), is(1));
+        
+        Iterator<Block> it = result.iterator();
+        
+        Block block = it.next();
+        assertThat(block.getLineStart(), is(1));
+        assertThat(block.getLineEnd(), is(2));
+        assertThat(block.getNestedBlockCount(), is(0));
+        assertThat(block.getCondition(), is(new Variable("__STDC_VERSION___201112L")));
+        assertThat(block.getPresenceCondition(), is(new Variable("A")));
+
+        assertThat(it.hasNext(), is(false));
     }
     
 }
