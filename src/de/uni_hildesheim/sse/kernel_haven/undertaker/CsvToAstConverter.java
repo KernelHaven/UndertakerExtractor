@@ -48,7 +48,7 @@ public class CsvToAstConverter {
      */
     private Formula fuzzyParse(String formula) throws ExpressionFormatException {
         
-        formula = formula.replaceAll("\\s*[<>=]{1,2}\\s*", "_");
+        formula = formula.replaceAll("\\s*(!=|[<>=]{1,2})\\s*", "_");
         
         Formula result = null;
         try {
