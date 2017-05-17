@@ -267,7 +267,7 @@ public class CsvToAstConverterTest {
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(2));
         assertThat(block.getNestedBlockCount(), is(0));
-        assertThat(block.getCondition(), is(new Variable("__STDC_VERSION___201112L")));
+        assertThat(block.getCondition(), is(new Variable("__STDC_VERSION___ge_201112L")));
         assertThat(block.getPresenceCondition(), is(new Variable("A")));
 
         assertThat(it.hasNext(), is(false));

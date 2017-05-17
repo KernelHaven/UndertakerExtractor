@@ -36,6 +36,41 @@ public class CsvToAstConverter {
     public CsvToAstConverter(boolean fuzzyParsing) {
         this.fuzzyParsing = fuzzyParsing;
     }
+
+    /**
+     * Replaces each occurrence of <code>from</code> in <code>str</code> with <code>to</code>.
+     * Spaces found around the occurrences of <code>from</code> are removed.
+     * Example: with <code>str="a =    3"</code>, <code>from="="</code> and <code>to="_eq_"</code> the
+     * result would be <code>"a_eq_3"</code>.
+     * 
+     * @param str The string to replace stuff in.
+     * @param from The substring to replace.
+     * @param to The string to replaces found occurrences with.
+     * @return A copy of <code>str</code> with the stuff replaced.
+     */
+    private String replace(String str, String from, String to) {
+        StringBuilder buffer = new StringBuilder(str);
+        
+        int index;
+        
+        while ((index = buffer.indexOf(from)) != -1) {
+            
+            int length = from.length();
+            
+            while (index > 0 && Character.isWhitespace(buffer.charAt(index - 1))) {
+                index--;
+                length++;
+            }
+            
+            while (index + length < buffer.length() && Character.isWhitespace(buffer.charAt(index + length))) {
+                length++;
+            }
+            
+            buffer.replace(index, index + length, to);
+        }
+        
+        return buffer.toString();
+    }
     
     /**
      * Tries to fuzzy parse the boolean formula. This should be used only if normal parsing was
@@ -47,8 +82,12 @@ public class CsvToAstConverter {
      * @throws ExpressionFormatException If the string still cannot be parsed.
      */
     private Formula fuzzyParse(String formula) throws ExpressionFormatException {
-        
-        formula = formula.replaceAll("\\s*(!=|[<>=]{1,2})\\s*", "_");
+        formula = replace(formula, ">=", "_ge_");
+        formula = replace(formula, "<=", "_le_");
+        formula = replace(formula, "==", "_eq_");
+        formula = replace(formula, "!=", "_ne_");
+        formula = replace(formula, ">", "_gt_");
+        formula = replace(formula, "<", "_lt_");
         
         Formula result = null;
         try {
