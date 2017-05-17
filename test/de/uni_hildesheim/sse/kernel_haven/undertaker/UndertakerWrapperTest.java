@@ -83,6 +83,30 @@ public class UndertakerWrapperTest {
     }
     
     /**
+     * Tests whether windows newlines are handled correctly.
+     * 
+     * @throws IOException unwanted. 
+     */
+    @Test
+    public void testWindowsNewlines() throws IOException {
+        Assume.assumeFalse(System.getProperty("os.name").toLowerCase().startsWith("win"));
+        
+        String csv = wrapper.runOnFile(new File("test_newline.c"));
+        
+        String[] lines = csv.split("\n");
+        
+        assertThat(lines.length, is(6));
+        assertThat(lines[0], is("test_newline.c;2;4;if;0;2;CONFIG_A;CONFIG_A"));
+        assertThat(lines[1], is("test_newline.c;6;9;if;0;6;(CONFIG_B) || !(CONFIG_C);(CONFIG_B) || !(CONFIG_C)"));
+        assertThat(lines[2], is("test_newline.c;9;19;else;0;6;;!((CONFIG_B) || !(CONFIG_C))"));
+        assertThat(lines[3], is("test_newline.c;11;13;if;1;11;CONFIG_A;(CONFIG_A) && (!((CONFIG_B) || !(CONFIG_C)))"));
+        assertThat(lines[4],
+                is("test_newline.c;13;15;elseif;1;11;CONFIG_B;(!(CONFIG_A) && (CONFIG_B)) && (!((CONFIG_B) || !(CONFIG_C)))"));
+        assertThat(lines[5],
+                is("test_newline.c;15;17;else;1;11;;(!(CONFIG_A) && (!(CONFIG_B))) && (!((CONFIG_B) || !(CONFIG_C)))"));
+    }
+    
+    /**
      * Tests whether undertaker correctly handles missing files.
      * 
      * @throws IOException unwanted.
