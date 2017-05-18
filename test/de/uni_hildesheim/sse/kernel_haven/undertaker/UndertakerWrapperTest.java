@@ -101,7 +101,8 @@ public class UndertakerWrapperTest {
         assertThat(lines[2], is("test_newline.c;9;19;else;0;6;;!((CONFIG_B) || !(CONFIG_C))"));
         assertThat(lines[3], is("test_newline.c;11;13;if;1;11;CONFIG_A;(CONFIG_A) && (!((CONFIG_B) || !(CONFIG_C)))"));
         assertThat(lines[4],
-                is("test_newline.c;13;15;elseif;1;11;CONFIG_B;(!(CONFIG_A) && (CONFIG_B)) && (!((CONFIG_B) || !(CONFIG_C)))"));
+                is("test_newline.c;13;15;elseif;1;11;CONFIG_B;(!(CONFIG_A) && (CONFIG_B)) && "
+                        + "(!((CONFIG_B) || !(CONFIG_C)))"));
         assertThat(lines[5],
                 is("test_newline.c;15;17;else;1;11;;(!(CONFIG_A) && (!(CONFIG_B))) && (!((CONFIG_B) || !(CONFIG_C)))"));
     }
