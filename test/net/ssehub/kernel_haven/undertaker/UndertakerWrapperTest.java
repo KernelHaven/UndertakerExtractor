@@ -1,4 +1,4 @@
-package de.uni_hildesheim.sse.kernel_haven.undertaker;
+package net.ssehub.kernel_haven.undertaker;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.uni_hildesheim.sse.kernel_haven.util.Logger;
+import net.ssehub.kernel_haven.util.Logger;
 
 /**
  * Tests the undertaker wrapper.

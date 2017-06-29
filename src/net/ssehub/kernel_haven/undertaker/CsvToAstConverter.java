@@ -1,15 +1,15 @@
-package de.uni_hildesheim.sse.kernel_haven.undertaker;
+package net.ssehub.kernel_haven.undertaker;
 
 import java.io.File;
 import java.util.Stack;
 
-import de.uni_hildesheim.sse.kernel_haven.code_model.SourceFile;
-import de.uni_hildesheim.sse.kernel_haven.util.FormatException;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.Formula;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.parser.CStyleBooleanGrammar;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.parser.ExpressionFormatException;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.parser.Parser;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.parser.VariableCache;
+import net.ssehub.kernel_haven.code_model.SourceFile;
+import net.ssehub.kernel_haven.util.FormatException;
+import net.ssehub.kernel_haven.util.logic.Formula;
+import net.ssehub.kernel_haven.util.logic.parser.CStyleBooleanGrammar;
+import net.ssehub.kernel_haven.util.logic.parser.ExpressionFormatException;
+import net.ssehub.kernel_haven.util.logic.parser.Parser;
+import net.ssehub.kernel_haven.util.logic.parser.VariableCache;
 
 /**
  * Converts the pilztaker output to AST ({@link Block}s).

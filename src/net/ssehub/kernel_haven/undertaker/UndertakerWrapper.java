@@ -1,11 +1,11 @@
-package de.uni_hildesheim.sse.kernel_haven.undertaker;
+package net.ssehub.kernel_haven.undertaker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-import de.uni_hildesheim.sse.kernel_haven.util.Logger;
-import de.uni_hildesheim.sse.kernel_haven.util.Util;
+import net.ssehub.kernel_haven.util.Logger;
+import net.ssehub.kernel_haven.util.Util;
 
 /**
  * This class is a Wrapper for calling the tool Undertaker and receiving the
@@ -40,7 +40,7 @@ public class UndertakerWrapper {
         // extract exe to run undertaker
         pilztakerExe = new File(resourceDir, "undertaker");
         if (!pilztakerExe.isFile()) {
-            Util.extractJarResourceToFile("de/uni_hildesheim/sse/kernel_haven/undertaker/res/pilztaker",
+            Util.extractJarResourceToFile("net/ssehub/kernel_haven/undertaker/res/pilztaker",
                     pilztakerExe);
             pilztakerExe.setExecutable(true);
         }

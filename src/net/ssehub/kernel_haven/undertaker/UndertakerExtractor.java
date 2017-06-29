@@ -1,19 +1,19 @@
-package de.uni_hildesheim.sse.kernel_haven.undertaker;
+package net.ssehub.kernel_haven.undertaker;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uni_hildesheim.sse.kernel_haven.SetUpException;
-import de.uni_hildesheim.sse.kernel_haven.code_model.CodeModelProvider;
-import de.uni_hildesheim.sse.kernel_haven.code_model.ICodeModelExtractor;
-import de.uni_hildesheim.sse.kernel_haven.code_model.SourceFile;
-import de.uni_hildesheim.sse.kernel_haven.config.CodeExtractorConfiguration;
-import de.uni_hildesheim.sse.kernel_haven.util.BlockingQueue;
-import de.uni_hildesheim.sse.kernel_haven.util.CodeExtractorException;
-import de.uni_hildesheim.sse.kernel_haven.util.FormatException;
-import de.uni_hildesheim.sse.kernel_haven.util.Logger;
+import net.ssehub.kernel_haven.SetUpException;
+import net.ssehub.kernel_haven.code_model.CodeModelProvider;
+import net.ssehub.kernel_haven.code_model.ICodeModelExtractor;
+import net.ssehub.kernel_haven.code_model.SourceFile;
+import net.ssehub.kernel_haven.config.CodeExtractorConfiguration;
+import net.ssehub.kernel_haven.util.BlockingQueue;
+import net.ssehub.kernel_haven.util.CodeExtractorException;
+import net.ssehub.kernel_haven.util.FormatException;
+import net.ssehub.kernel_haven.util.Logger;
 
 /**
  * Wrapper to run Undertaker to extract code blocks.

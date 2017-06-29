@@ -1,4 +1,4 @@
-package de.uni_hildesheim.sse.kernel_haven.undertaker;
+package net.ssehub.kernel_haven.undertaker;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -9,13 +9,13 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import de.uni_hildesheim.sse.kernel_haven.code_model.Block;
-import de.uni_hildesheim.sse.kernel_haven.code_model.SourceFile;
-import de.uni_hildesheim.sse.kernel_haven.util.FormatException;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.Conjunction;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.Formula;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.Negation;
-import de.uni_hildesheim.sse.kernel_haven.util.logic.Variable;
+import net.ssehub.kernel_haven.code_model.Block;
+import net.ssehub.kernel_haven.code_model.SourceFile;
+import net.ssehub.kernel_haven.util.FormatException;
+import net.ssehub.kernel_haven.util.logic.Conjunction;
+import net.ssehub.kernel_haven.util.logic.Formula;
+import net.ssehub.kernel_haven.util.logic.Negation;
+import net.ssehub.kernel_haven.util.logic.Variable;
 
 /**
  * Tests the converter.
