@@ -9,7 +9,7 @@ This extractor finds #ifdef blocks in source files (`*.c`, `*.h`, `*.S`) and ext
 
 ## Usage
 
-To use this extractor, set `code.extractor.class` to `net.ssehub.kernel_haven.undertaker.UndertakerExtractorFactory` in the KernelHaven properties.
+To use this extractor, set `code.extractor.class` to `net.ssehub.kernel_haven.undertaker.UndertakerExtractor` in the KernelHaven properties.
 
 ### Dependencies
 
