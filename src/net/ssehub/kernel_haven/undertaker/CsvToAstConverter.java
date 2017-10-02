@@ -3,6 +3,7 @@ package net.ssehub.kernel_haven.undertaker;
 import java.io.File;
 import java.util.Stack;
 
+import net.ssehub.kernel_haven.code_model.CodeBlock;
 import net.ssehub.kernel_haven.code_model.SourceFile;
 import net.ssehub.kernel_haven.util.FormatException;
 import net.ssehub.kernel_haven.util.logic.Formula;
@@ -12,7 +13,7 @@ import net.ssehub.kernel_haven.util.logic.parser.Parser;
 import net.ssehub.kernel_haven.util.logic.parser.VariableCache;
 
 /**
- * Converts the pilztaker output to AST ({@link Block}s).
+ * Converts the pilztaker output to AST ({@link CodeElement}s).
  * 
  * @author Adam
  * @author Johannes
@@ -140,7 +141,7 @@ public class CsvToAstConverter {
     public SourceFile convert(File filePath, String csv) throws FormatException {
         SourceFile result = new SourceFile(filePath);
         
-        Stack<UndertakerBlock> stack = new Stack<>();
+        Stack<CodeBlock> stack = new Stack<>();
         
         try {
             for (String line : csv.split("\n")) {
@@ -181,11 +182,11 @@ public class CsvToAstConverter {
                     stack.pop();
                 }
                 
-                UndertakerBlock block = new UndertakerBlock(lineStart, lineEnd, condition, pc);
+                CodeBlock block = new CodeBlock(lineStart, lineEnd, filePath, condition, pc);
                 if (nestingDepth == 0) {
-                    result.addBlock(block);
+                    result.addElement(block);
                 } else {
-                    stack.peek().addChild(block);
+                    stack.peek().addNestedElement(block);
                 }
                 
                 stack.push(block);

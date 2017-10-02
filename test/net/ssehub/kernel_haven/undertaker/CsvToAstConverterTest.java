@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import net.ssehub.kernel_haven.code_model.Block;
+import net.ssehub.kernel_haven.code_model.CodeElement;
 import net.ssehub.kernel_haven.code_model.SourceFile;
 import net.ssehub.kernel_haven.util.FormatException;
 import net.ssehub.kernel_haven.util.logic.Conjunction;
@@ -39,21 +39,21 @@ public class CsvToAstConverterTest {
         SourceFile result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
-        assertThat(result.getTopBlockCount(), is(2));
+        assertThat(result.getTopElementCount(), is(2));
         
-        Iterator<Block> it = result.iterator();
+        Iterator<CodeElement> it = result.iterator();
         
-        Block block = it.next();
+        CodeElement block = it.next();
         assertThat(block.getLineStart(), is(2));
         assertThat(block.getLineEnd(), is(4));
-        assertThat(block.getNestedBlockCount(), is(0));
+        assertThat(block.getNestedElementCount(), is(0));
         assertThat(block.getCondition(), is(new Variable("CONFIG_A")));
         assertThat(block.getPresenceCondition(), is(new Variable("CONFIG_A")));
         
         block = it.next();
         assertThat(block.getLineStart(), is(6));
         assertThat(block.getLineEnd(), is(12));
-        assertThat(block.getNestedBlockCount(), is(0));
+        assertThat(block.getNestedElementCount(), is(0));
         Formula condition = new Conjunction(new Variable("CONFIG_B"), new Negation(new Variable("CONFIG_C")));
         assertThat(block.getCondition(), is(condition));
         assertThat(block.getPresenceCondition(), is(condition));
@@ -95,25 +95,25 @@ public class CsvToAstConverterTest {
         SourceFile result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
-        assertThat(result.getTopBlockCount(), is(1));
+        assertThat(result.getTopElementCount(), is(1));
         
-        Iterator<Block> it = result.iterator();
+        Iterator<CodeElement> it = result.iterator();
         
-        Block block = it.next();
+        CodeElement block = it.next();
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(100));
-        assertThat(block.getNestedBlockCount(), is(3));
+        assertThat(block.getNestedElementCount(), is(3));
         assertThat(block.getCondition(), is(new Variable("CONFIG_A")));
         assertThat(block.getPresenceCondition(), is(new Variable("CONFIG_A")));
         
         assertThat(it.hasNext(), is(false));
         
-        it = block.iterator();
+        it = block.iterateNestedElements().iterator();
         
-        Block nested = it.next();
+        CodeElement nested = it.next();
         assertThat(nested.getLineStart(), is(2));
         assertThat(nested.getLineEnd(), is(3));
-        assertThat(nested.getNestedBlockCount(), is(0));
+        assertThat(nested.getNestedElementCount(), is(0));
         Formula condition = new Conjunction(new Variable("CONFIG_B"), new Variable("CONFIG_A"));
         assertThat(nested.getCondition(), is(new Variable("CONFIG_B")));
         assertThat(nested.getPresenceCondition(), is(condition));
@@ -121,15 +121,15 @@ public class CsvToAstConverterTest {
         nested = it.next();
         assertThat(nested.getLineStart(), is(4));
         assertThat(nested.getLineEnd(), is(50));
-        assertThat(nested.getNestedBlockCount(), is(1));
+        assertThat(nested.getNestedElementCount(), is(1));
         condition = new Conjunction(new Variable("CONFIG_C"), new Variable("CONFIG_A"));
         assertThat(nested.getCondition(), is(new Variable("CONFIG_C")));
         assertThat(nested.getPresenceCondition(), is(condition));
         
-        Block nestedNested = nested.iterator().next();
+        CodeElement nestedNested = nested.iterateNestedElements().iterator().next();
         assertThat(nestedNested.getLineStart(), is(5));
         assertThat(nestedNested.getLineEnd(), is(6));
-        assertThat(nestedNested.getNestedBlockCount(), is(0));
+        assertThat(nestedNested.getNestedElementCount(), is(0));
         condition = new Conjunction(new Variable("CONFIG_D"),
                 new Conjunction(new Variable("CONFIG_C"), new Variable("CONFIG_A")));
         assertThat(nestedNested.getCondition(), is(new Variable("CONFIG_D")));
@@ -138,7 +138,7 @@ public class CsvToAstConverterTest {
         nested = it.next();
         assertThat(nested.getLineStart(), is(51));
         assertThat(nested.getLineEnd(), is(52));
-        assertThat(nested.getNestedBlockCount(), is(0));
+        assertThat(nested.getNestedElementCount(), is(0));
         condition = new Conjunction(new Variable("CONFIG_E"), new Variable("CONFIG_A"));
         assertThat(nested.getCondition(), is(new Variable("CONFIG_E")));
         assertThat(nested.getPresenceCondition(), is(condition));
@@ -161,21 +161,21 @@ public class CsvToAstConverterTest {
         SourceFile result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
-        assertThat(result.getTopBlockCount(), is(3));
+        assertThat(result.getTopElementCount(), is(3));
         
-        Iterator<Block> it = result.iterator();
+        Iterator<CodeElement> it = result.iterator();
         
-        Block block = it.next();
+        CodeElement block = it.next();
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(2));
-        assertThat(block.getNestedBlockCount(), is(0));
+        assertThat(block.getNestedElementCount(), is(0));
         assertThat(block.getCondition(), is(new Variable("CONFIG_A")));
         assertThat(block.getPresenceCondition(), is(new Variable("CONFIG_A")));
         
         block = it.next();
         assertThat(block.getLineStart(), is(2));
         assertThat(block.getLineEnd(), is(3));
-        assertThat(block.getNestedBlockCount(), is(0));
+        assertThat(block.getNestedElementCount(), is(0));
         assertThat(block.getCondition(), is(new Variable("CONFIG_B")));
         Formula pc = new Conjunction(new Variable("CONFIG_B"), new Negation(new Variable("CONFIG_A")));
         assertThat(block.getPresenceCondition(), is(pc));
@@ -183,7 +183,7 @@ public class CsvToAstConverterTest {
         block = it.next();
         assertThat(block.getLineStart(), is(4));
         assertThat(block.getLineEnd(), is(5));
-        assertThat(block.getNestedBlockCount(), is(0));
+        assertThat(block.getNestedElementCount(), is(0));
         assertThat(block.getCondition(), is(nullValue()));
         pc = new Conjunction(new Negation(new Variable("CONFIG_B")), new Negation(new Variable("CONFIG_A")));
         assertThat(block.getPresenceCondition(), is(pc));
@@ -259,14 +259,14 @@ public class CsvToAstConverterTest {
         SourceFile result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
-        assertThat(result.getTopBlockCount(), is(1));
+        assertThat(result.getTopElementCount(), is(1));
         
-        Iterator<Block> it = result.iterator();
+        Iterator<CodeElement> it = result.iterator();
         
-        Block block = it.next();
+        CodeElement block = it.next();
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(2));
-        assertThat(block.getNestedBlockCount(), is(0));
+        assertThat(block.getNestedElementCount(), is(0));
         assertThat(block.getCondition(), is(new Variable("__STDC_VERSION___ge_201112L")));
         assertThat(block.getPresenceCondition(), is(new Variable("A")));
 
