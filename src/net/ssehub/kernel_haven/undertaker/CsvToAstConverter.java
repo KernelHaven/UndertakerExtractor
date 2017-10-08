@@ -17,7 +17,6 @@ import net.ssehub.kernel_haven.util.logic.parser.VariableCache;
  * 
  * @author Adam
  * @author Johannes
- *
  */
 public class CsvToAstConverter {
 
