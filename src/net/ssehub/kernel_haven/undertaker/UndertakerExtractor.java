@@ -6,10 +6,14 @@ import java.io.IOException;
 import net.ssehub.kernel_haven.SetUpException;
 import net.ssehub.kernel_haven.code_model.AbstractCodeModelExtractor;
 import net.ssehub.kernel_haven.code_model.SourceFile;
-import net.ssehub.kernel_haven.config.CodeExtractorConfiguration;
+import net.ssehub.kernel_haven.config.Configuration;
+import net.ssehub.kernel_haven.config.DefaultSettings;
+import net.ssehub.kernel_haven.config.Setting;
+import net.ssehub.kernel_haven.config.Setting.Type;
 import net.ssehub.kernel_haven.util.CodeExtractorException;
 import net.ssehub.kernel_haven.util.ExtractorException;
 import net.ssehub.kernel_haven.util.FormatException;
+import net.ssehub.kernel_haven.util.Util;
 
 /**
  * Wrapper to run Undertaker to extract code blocks.
@@ -19,6 +23,9 @@ import net.ssehub.kernel_haven.util.FormatException;
  */
 public class UndertakerExtractor extends AbstractCodeModelExtractor {
 
+    private static final Setting<Integer> HANG_TIMEOUT
+        = new Setting<>("code.extractor.hang_timeout", Type.INTEGER, true, "20000", "TODO");
+    
     private File linuxSourceTree;
     
     /**
@@ -31,22 +38,16 @@ public class UndertakerExtractor extends AbstractCodeModelExtractor {
     private UndertakerWrapper wrapper;
     
     @Override
-    protected void init(CodeExtractorConfiguration config) throws SetUpException {
-        linuxSourceTree = config.getSourceTree();
-        if (linuxSourceTree == null) {
-            throw new SetUpException("Config does not contain source_tree setting");
-        }
+    protected void init(Configuration config) throws SetUpException {
+        linuxSourceTree = config.getValue(DefaultSettings.SOURCE_TREE);
 
-        resourceDir = config.getExtractorResourceDir(getClass());
+        resourceDir = Util.getExtractorResourceDir(config, getClass());
 
-        fuzzyBooleanParsing = Boolean.parseBoolean(config.getProperty("code.extractor.fuzzy_parsing", "false"));
         
-        long timeout;
-        try {
-            timeout = Long.parseLong(config.getProperty("code.extractor.hang_timeout", "20000"));
-        } catch (NumberFormatException e) {
-            throw new SetUpException(e);
-        }
+        fuzzyBooleanParsing = config.getValue(DefaultSettings.FUZZY_PARSING);
+        
+        config.registerSetting(HANG_TIMEOUT);
+        long timeout = config.getValue(HANG_TIMEOUT);
         
         try {
             wrapper = new UndertakerWrapper(resourceDir, linuxSourceTree, timeout);
