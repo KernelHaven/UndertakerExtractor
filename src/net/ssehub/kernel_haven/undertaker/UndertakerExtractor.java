@@ -24,7 +24,9 @@ import net.ssehub.kernel_haven.util.Util;
 public class UndertakerExtractor extends AbstractCodeModelExtractor {
 
     private static final Setting<Integer> HANG_TIMEOUT
-        = new Setting<>("code.extractor.hang_timeout", Type.INTEGER, true, "20000", "TODO");
+        = new Setting<>("code.extractor.hang_timeout", Type.INTEGER, true, "20000", "Undertaker has a bug where it "
+                + "hangs forever on some few files of the Linux Kernel. This setting defines a timeout in milliseconds "
+                + "until the undertaker executable is forcibly terminated.");
     
     private File linuxSourceTree;
     
