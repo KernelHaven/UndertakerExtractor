@@ -74,12 +74,14 @@ public class UndertakerWrapperTest {
         assertThat(lines.length, is(6));
         assertThat(lines[0], is("test.c;2;4;if;0;2;CONFIG_A;CONFIG_A"));
         assertThat(lines[1], is("test.c;6;8;if;0;6;(CONFIG_B) || !(CONFIG_C);(CONFIG_B) || !(CONFIG_C)"));
-        assertThat(lines[2], is("test.c;8;18;else;0;6;;!((CONFIG_B) || !(CONFIG_C))"));
+        assertThat(lines[2], is("test.c;8;18;else;0;6;!((CONFIG_B) || !(CONFIG_C));!((CONFIG_B) || !(CONFIG_C))"));
         assertThat(lines[3], is("test.c;10;12;if;1;10;CONFIG_A;(CONFIG_A) && (!((CONFIG_B) || !(CONFIG_C)))"));
         assertThat(lines[4],
-                is("test.c;12;14;elseif;1;10;CONFIG_B;(!(CONFIG_A) && (CONFIG_B)) && (!((CONFIG_B) || !(CONFIG_C)))"));
+                is("test.c;12;14;elseif;1;10;!(CONFIG_A) && (CONFIG_B);"
+                        + "(!(CONFIG_A) && (CONFIG_B)) && (!((CONFIG_B) || !(CONFIG_C)))"));
         assertThat(lines[5],
-                is("test.c;14;16;else;1;10;;(!(CONFIG_A) && (!(CONFIG_B))) && (!((CONFIG_B) || !(CONFIG_C)))"));
+                is("test.c;14;16;else;1;10;!(CONFIG_A) && (!(CONFIG_B));"
+                        + "(!(CONFIG_A) && (!(CONFIG_B))) && (!((CONFIG_B) || !(CONFIG_C)))"));
     }
     
     /**
@@ -98,13 +100,15 @@ public class UndertakerWrapperTest {
         assertThat(lines.length, is(6));
         assertThat(lines[0], is("test_newline.c;2;4;if;0;2;CONFIG_A;CONFIG_A"));
         assertThat(lines[1], is("test_newline.c;6;9;if;0;6;(CONFIG_B) || !(CONFIG_C);(CONFIG_B) || !(CONFIG_C)"));
-        assertThat(lines[2], is("test_newline.c;9;19;else;0;6;;!((CONFIG_B) || !(CONFIG_C))"));
+        assertThat(lines[2], is("test_newline.c;9;19;else;0;6;!((CONFIG_B) || !(CONFIG_C));"
+                + "!((CONFIG_B) || !(CONFIG_C))"));
         assertThat(lines[3], is("test_newline.c;11;13;if;1;11;CONFIG_A;(CONFIG_A) && (!((CONFIG_B) || !(CONFIG_C)))"));
         assertThat(lines[4],
-                is("test_newline.c;13;15;elseif;1;11;CONFIG_B;(!(CONFIG_A) && (CONFIG_B)) && "
+                is("test_newline.c;13;15;elseif;1;11;!(CONFIG_A) && (CONFIG_B);(!(CONFIG_A) && (CONFIG_B)) && "
                         + "(!((CONFIG_B) || !(CONFIG_C)))"));
         assertThat(lines[5],
-                is("test_newline.c;15;17;else;1;11;;(!(CONFIG_A) && (!(CONFIG_B))) && (!((CONFIG_B) || !(CONFIG_C)))"));
+                is("test_newline.c;15;17;else;1;11;!(CONFIG_A) && (!(CONFIG_B));"
+                        + "(!(CONFIG_A) && (!(CONFIG_B))) && (!((CONFIG_B) || !(CONFIG_C)))"));
     }
     
     /**

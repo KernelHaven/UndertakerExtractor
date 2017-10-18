@@ -1,7 +1,6 @@
 package net.ssehub.kernel_haven.undertaker;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
@@ -154,8 +153,8 @@ public class CsvToAstConverterTest {
     @Test
     public void testElsIfs() throws FormatException {
         String csv = "test.c;1;2;if;0;1;CONFIG_A;CONFIG_A\n"
-                + "test.c;2;3;elseif;0;1;CONFIG_B;CONFIG_B && !CONFIG_A\n"
-                + "test.c;4;5;else;0;1;;!CONFIG_B && !CONFIG_A\n";
+                + "test.c;2;3;elseif;0;1;!(CONFIG_A) && (CONFIG_B);!(CONFIG_A) && (CONFIG_B)\n"
+                + "test.c;4;5;else;0;1;!(CONFIG_A) && (!(CONFIG_B));!(CONFIG_A) && (!(CONFIG_B))\n";
         
         CsvToAstConverter converter = new CsvToAstConverter(false);
         SourceFile result = converter.convert(new File("test.c"), csv);
@@ -176,17 +175,17 @@ public class CsvToAstConverterTest {
         assertThat(block.getLineStart(), is(2));
         assertThat(block.getLineEnd(), is(3));
         assertThat(block.getNestedElementCount(), is(0));
-        assertThat(block.getCondition(), is(new Variable("CONFIG_B")));
-        Formula pc = new Conjunction(new Variable("CONFIG_B"), new Negation(new Variable("CONFIG_A")));
-        assertThat(block.getPresenceCondition(), is(pc));
+        Formula f = new Conjunction(new Negation(new Variable("CONFIG_A")), new Variable("CONFIG_B"));
+        assertThat(block.getCondition(), is(f));
+        assertThat(block.getPresenceCondition(), is(f));
         
         block = it.next();
         assertThat(block.getLineStart(), is(4));
         assertThat(block.getLineEnd(), is(5));
         assertThat(block.getNestedElementCount(), is(0));
-        assertThat(block.getCondition(), is(nullValue()));
-        pc = new Conjunction(new Negation(new Variable("CONFIG_B")), new Negation(new Variable("CONFIG_A")));
-        assertThat(block.getPresenceCondition(), is(pc));
+        f = new Conjunction(new Negation(new Variable("CONFIG_A")), new Negation(new Variable("CONFIG_B")));
+        assertThat(block.getCondition(), is(f));
+        assertThat(block.getPresenceCondition(), is(f));
 
         assertThat(it.hasNext(), is(false));
     }
