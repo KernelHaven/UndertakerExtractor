@@ -49,7 +49,7 @@ public class UndertakerExtractor extends AbstractCodeModelExtractor {
         fuzzyBooleanParsing = config.getValue(DefaultSettings.FUZZY_PARSING);
         
         config.registerSetting(HANG_TIMEOUT);
-        long timeout = config.getValue(HANG_TIMEOUT);
+        long timeout = (long) config.getValue(HANG_TIMEOUT);
         
         try {
             wrapper = new UndertakerWrapper(resourceDir, linuxSourceTree, timeout);
