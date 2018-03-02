@@ -10,10 +10,7 @@ import java.io.IOException;
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import net.ssehub.kernel_haven.util.Logger;
 
 /**
  * Tests the undertaker wrapper.
@@ -28,14 +25,6 @@ public class UndertakerWrapperTest {
     private static final File SOURCE_DIR = new File("testdata");
     
     private UndertakerWrapper wrapper;
-    
-    /**
-     * Initializes the logger.
-     */
-    @BeforeClass
-    public static void beforeClass() {
-        Logger.init();
-    }
     
     /**
      * Clears the temporary resource directory.
