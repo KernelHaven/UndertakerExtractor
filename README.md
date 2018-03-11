@@ -1,11 +1,11 @@
 # UndertakerExtractor
 
 
-![Build Status](http://jenkins.sse.uni-hildesheim.de/buildStatus/icon?job=KernelHaven_UndertakerExtractor)
+![Build Status](https://jenkins.sse.uni-hildesheim.de/buildStatus/icon?job=KernelHaven_UndertakerExtractor)
 
 A code-model extractor for [KernelHaven](https://github.com/KernelHaven/KernelHaven).
 
-This extractor uses [Undertaker v1.6.1](http://vamos.informatik.uni-erlangen.de/trac/undertaker/) to anaylze arbitrary C source code.
+This extractor uses [Undertaker v1.6.1](https://vamos.informatik.uni-erlangen.de/trac/undertaker/) to anaylze arbitrary C source code.
 
 ## Capabilities
 
@@ -24,6 +24,7 @@ In addition to KernelHaven, this plugin has the following dependencies:
 
 ## License
 
-This plugin is licensed under GPLv3. Another license would be possible with following restrictions:
+This plugin is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
 
-The plugin contains undertaker which is under GPL-3.0. We do not link against undertaker, so technically we are not infected by GPL. However a release under a license other than GPL-3.0 would require the removal of the contained undertaker.
+Another license would be possible with the following restriction:
+* The plugin contains undertaker which is under GPLv3. We do not link against undertaker, so technically we are not infected by GPL. However a release under a license other than GPLv3 would require the removal of the contained undertaker.
