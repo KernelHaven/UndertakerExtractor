@@ -2,6 +2,8 @@ package net.ssehub.kernel_haven.undertaker;
 
 import java.io.File;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.ssehub.kernel_haven.code_model.CodeBlock;
 import net.ssehub.kernel_haven.code_model.SourceFile;
@@ -19,6 +21,8 @@ import net.ssehub.kernel_haven.util.logic.parser.VariableCache;
  * @author Johannes
  */
 public class CsvToAstConverter {
+
+    private static final Pattern UNECESSARY_BRACKET_PATTERN = Pattern.compile("\\(([ \\w]+)\\)");
 
     private static final String DELIMITER = ";";
 
@@ -73,6 +77,21 @@ public class CsvToAstConverter {
     }
     
     /**
+     * Removes unnecessary brackets from the given formula.
+     * @param condition The unparsed condition from which the unnecessary brackets shall be detected and removed from.
+     * @return An equivalent condition with removed unnecessary brackets, maybe the same instance if the condition does
+     *     not contain any unnecessary brackets.
+     */
+    private static String removeUnnecessaryBrackets(String condition) {
+        Matcher matcher = UNECESSARY_BRACKET_PATTERN.matcher(condition);
+        while (matcher.find()) {
+            condition = condition.replace(matcher.group(), matcher.group(1));
+            matcher = UNECESSARY_BRACKET_PATTERN.matcher(condition);
+        }
+        return condition;
+    }
+    
+    /**
      * Tries to fuzzy parse the boolean formula. This should be used only if normal parsing was
      * not successful.
      * 
@@ -82,6 +101,7 @@ public class CsvToAstConverter {
      * @throws ExpressionFormatException If the string still cannot be parsed.
      */
     private Formula fuzzyParse(String formula) throws ExpressionFormatException {
+        formula = removeUnnecessaryBrackets(formula);
         formula = replace(formula, ">=", "_ge_");
         formula = replace(formula, "<=", "_le_");
         formula = replace(formula, "==", "_eq_");

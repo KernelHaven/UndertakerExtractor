@@ -8,9 +8,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.AfterClass;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import net.ssehub.kernel_haven.RunOnlyOnLinux;
 
 /**
  * Tests the undertaker wrapper.
@@ -18,6 +20,7 @@ import org.junit.Test;
  * @author Adam
  * @author Johannes
  */
+@RunWith(value = RunOnlyOnLinux.class)
 public class UndertakerWrapperTest {
 
     private static final File RESOURCE_DIR = new File("testdata/tmp_res");
@@ -54,8 +57,6 @@ public class UndertakerWrapperTest {
      */
     @Test
     public void testUndertakerRun() throws IOException {
-        Assume.assumeFalse(System.getProperty("os.name").toLowerCase().startsWith("win"));
-        
         String csv = wrapper.runOnFile(new File("test.c"));
         
         String[] lines = csv.split("\n");
@@ -80,8 +81,6 @@ public class UndertakerWrapperTest {
      */
     @Test
     public void testWindowsNewlines() throws IOException {
-        Assume.assumeFalse(System.getProperty("os.name").toLowerCase().startsWith("win"));
-        
         String csv = wrapper.runOnFile(new File("test_newline.c"));
         
         String[] lines = csv.split("\n");
@@ -107,8 +106,6 @@ public class UndertakerWrapperTest {
      */
     @Test
     public void testUndertakerNonExisting() throws IOException {
-        Assume.assumeFalse(System.getProperty("os.name").toLowerCase().startsWith("win"));
-        
         String csv = wrapper.runOnFile(new File("non_existing.c"));
         assertThat(csv, nullValue());
     }

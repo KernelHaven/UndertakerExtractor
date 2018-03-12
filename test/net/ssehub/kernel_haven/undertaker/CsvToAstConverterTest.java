@@ -272,4 +272,31 @@ public class CsvToAstConverterTest {
         assertThat(it.hasNext(), is(false));
     }
     
+    /**
+     * Tests whether fuzzy parsing works correctly.
+     * 
+     * @throws FormatException unwanted.
+     */
+    @Test
+    public void testFuzzyParsingTooManyBrackets() throws FormatException {
+        String csv = "test.c;1;2;if;0;1;((VAR) == 1);A";
+        
+        CsvToAstConverter converter = new CsvToAstConverter(true);
+        SourceFile result = converter.convert(new File("test.c"), csv);
+        
+        assertThat(result.getPath(), is(new File("test.c")));
+        assertThat(result.getTopElementCount(), is(1));
+        
+        Iterator<CodeElement> it = result.iterator();
+        
+        CodeElement block = it.next();
+        assertThat(block.getLineStart(), is(1));
+        assertThat(block.getLineEnd(), is(2));
+        assertThat(block.getNestedElementCount(), is(0));
+        assertThat(block.getCondition(), is(new Variable("VAR_eq_1")));
+        assertThat(block.getPresenceCondition(), is(new Variable("A")));
+        
+        assertThat(it.hasNext(), is(false));
+    }
+    
 }
