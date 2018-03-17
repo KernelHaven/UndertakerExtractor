@@ -1,5 +1,7 @@
 package net.ssehub.kernel_haven.undertaker;
 
+import static net.ssehub.kernel_haven.util.logic.FormulaBuilder.and;
+import static net.ssehub.kernel_haven.util.logic.FormulaBuilder.not;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -11,9 +13,7 @@ import org.junit.Test;
 import net.ssehub.kernel_haven.code_model.CodeElement;
 import net.ssehub.kernel_haven.code_model.SourceFile;
 import net.ssehub.kernel_haven.util.FormatException;
-import net.ssehub.kernel_haven.util.logic.Conjunction;
 import net.ssehub.kernel_haven.util.logic.Formula;
-import net.ssehub.kernel_haven.util.logic.Negation;
 import net.ssehub.kernel_haven.util.logic.Variable;
 
 /**
@@ -53,7 +53,7 @@ public class CsvToAstConverterTest {
         assertThat(block.getLineStart(), is(6));
         assertThat(block.getLineEnd(), is(12));
         assertThat(block.getNestedElementCount(), is(0));
-        Formula condition = new Conjunction(new Variable("CONFIG_B"), new Negation(new Variable("CONFIG_C")));
+        Formula condition = and("CONFIG_B", not("CONFIG_C"));
         assertThat(block.getCondition(), is(condition));
         assertThat(block.getPresenceCondition(), is(condition));
         
@@ -113,7 +113,7 @@ public class CsvToAstConverterTest {
         assertThat(nested.getLineStart(), is(2));
         assertThat(nested.getLineEnd(), is(3));
         assertThat(nested.getNestedElementCount(), is(0));
-        Formula condition = new Conjunction(new Variable("CONFIG_B"), new Variable("CONFIG_A"));
+        Formula condition = and("CONFIG_B", "CONFIG_A");
         assertThat(nested.getCondition(), is(new Variable("CONFIG_B")));
         assertThat(nested.getPresenceCondition(), is(condition));
         
@@ -121,7 +121,7 @@ public class CsvToAstConverterTest {
         assertThat(nested.getLineStart(), is(4));
         assertThat(nested.getLineEnd(), is(50));
         assertThat(nested.getNestedElementCount(), is(1));
-        condition = new Conjunction(new Variable("CONFIG_C"), new Variable("CONFIG_A"));
+        condition = and("CONFIG_C", "CONFIG_A");
         assertThat(nested.getCondition(), is(new Variable("CONFIG_C")));
         assertThat(nested.getPresenceCondition(), is(condition));
         
@@ -129,8 +129,7 @@ public class CsvToAstConverterTest {
         assertThat(nestedNested.getLineStart(), is(5));
         assertThat(nestedNested.getLineEnd(), is(6));
         assertThat(nestedNested.getNestedElementCount(), is(0));
-        condition = new Conjunction(new Variable("CONFIG_D"),
-                new Conjunction(new Variable("CONFIG_C"), new Variable("CONFIG_A")));
+        condition = and("CONFIG_D", and("CONFIG_C", "CONFIG_A"));
         assertThat(nestedNested.getCondition(), is(new Variable("CONFIG_D")));
         assertThat(nestedNested.getPresenceCondition(), is(condition));
         
@@ -138,7 +137,7 @@ public class CsvToAstConverterTest {
         assertThat(nested.getLineStart(), is(51));
         assertThat(nested.getLineEnd(), is(52));
         assertThat(nested.getNestedElementCount(), is(0));
-        condition = new Conjunction(new Variable("CONFIG_E"), new Variable("CONFIG_A"));
+        condition = and("CONFIG_E", "CONFIG_A");
         assertThat(nested.getCondition(), is(new Variable("CONFIG_E")));
         assertThat(nested.getPresenceCondition(), is(condition));
 
@@ -175,7 +174,7 @@ public class CsvToAstConverterTest {
         assertThat(block.getLineStart(), is(2));
         assertThat(block.getLineEnd(), is(3));
         assertThat(block.getNestedElementCount(), is(0));
-        Formula f = new Conjunction(new Negation(new Variable("CONFIG_A")), new Variable("CONFIG_B"));
+        Formula f = and(not("CONFIG_A"), "CONFIG_B");
         assertThat(block.getCondition(), is(f));
         assertThat(block.getPresenceCondition(), is(f));
         
@@ -183,7 +182,7 @@ public class CsvToAstConverterTest {
         assertThat(block.getLineStart(), is(4));
         assertThat(block.getLineEnd(), is(5));
         assertThat(block.getNestedElementCount(), is(0));
-        f = new Conjunction(new Negation(new Variable("CONFIG_A")), new Negation(new Variable("CONFIG_B")));
+        f = and(not("CONFIG_A"), not("CONFIG_B"));
         assertThat(block.getCondition(), is(f));
         assertThat(block.getPresenceCondition(), is(f));
 
