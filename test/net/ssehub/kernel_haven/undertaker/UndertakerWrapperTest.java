@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import net.ssehub.kernel_haven.RunOnlyOnLinux;
+import net.ssehub.kernel_haven.test_utils.RunOnlyOnLinux;
 
 /**
  * Tests the undertaker wrapper.
