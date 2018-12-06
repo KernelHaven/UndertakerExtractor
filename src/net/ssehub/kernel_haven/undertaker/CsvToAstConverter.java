@@ -157,8 +157,8 @@ public class CsvToAstConverter {
      * 
      * @throws FormatException If the format of the CSV is not valid.
      */
-    public SourceFile convert(File filePath, String csv) throws FormatException {
-        SourceFile result = new SourceFile(filePath);
+    public SourceFile<CodeBlock> convert(File filePath, String csv) throws FormatException {
+        SourceFile<CodeBlock> result = new SourceFile<>(filePath);
         
         Stack<CodeBlock> stack = new Stack<>();
         

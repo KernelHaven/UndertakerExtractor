@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import net.ssehub.kernel_haven.SetUpException;
 import net.ssehub.kernel_haven.code_model.AbstractCodeModelExtractor;
+import net.ssehub.kernel_haven.code_model.CodeBlock;
 import net.ssehub.kernel_haven.code_model.SourceFile;
 import net.ssehub.kernel_haven.config.Configuration;
 import net.ssehub.kernel_haven.config.DefaultSettings;
@@ -59,7 +60,7 @@ public class UndertakerExtractor extends AbstractCodeModelExtractor {
     }
 
     @Override
-    protected SourceFile runOnFile(File target) throws ExtractorException {
+    protected SourceFile<CodeBlock> runOnFile(File target) throws ExtractorException {
         try {
             
             String csv = wrapper.runOnFile(target);
@@ -68,7 +69,7 @@ public class UndertakerExtractor extends AbstractCodeModelExtractor {
                 throw new CodeExtractorException(target, "Undertaker execution not successful");
             }
             CsvToAstConverter converter = new CsvToAstConverter(fuzzyBooleanParsing);
-            SourceFile result = converter.convert(target, csv);
+            SourceFile<CodeBlock> result = converter.convert(target, csv);
     
             return result;
             

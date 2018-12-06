@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import net.ssehub.kernel_haven.code_model.CodeElement;
+import net.ssehub.kernel_haven.code_model.CodeBlock;
 import net.ssehub.kernel_haven.code_model.SourceFile;
 import net.ssehub.kernel_haven.util.FormatException;
 import net.ssehub.kernel_haven.util.logic.Formula;
@@ -35,14 +35,14 @@ public class CsvToAstConverterTest {
                 + "test.c;6;12;if;0;6;CONFIG_B && !CONFIG_C;CONFIG_B && !CONFIG_C";
         
         CsvToAstConverter converter = new CsvToAstConverter(false);
-        SourceFile result = converter.convert(new File("test.c"), csv);
+        SourceFile<CodeBlock> result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
         assertThat(result.getTopElementCount(), is(2));
         
-        Iterator<CodeElement> it = result.iterator();
+        Iterator<CodeBlock> it = result.iterator();
         
-        CodeElement block = it.next();
+        CodeBlock block = it.next();
         assertThat(block.getLineStart(), is(2));
         assertThat(block.getLineEnd(), is(4));
         assertThat(block.getNestedElementCount(), is(0));
@@ -91,14 +91,14 @@ public class CsvToAstConverterTest {
                 + "test.c;51;52;if;1;51;CONFIG_E;CONFIG_E && CONFIG_A\n";
         
         CsvToAstConverter converter = new CsvToAstConverter(false);
-        SourceFile result = converter.convert(new File("test.c"), csv);
+        SourceFile<CodeBlock> result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
         assertThat(result.getTopElementCount(), is(1));
         
-        Iterator<CodeElement> it = result.iterator();
+        Iterator<CodeBlock> it = result.iterator();
         
-        CodeElement block = it.next();
+        CodeBlock block = it.next();
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(100));
         assertThat(block.getNestedElementCount(), is(3));
@@ -107,9 +107,9 @@ public class CsvToAstConverterTest {
         
         assertThat(it.hasNext(), is(false));
         
-        it = block.iterateNestedElements().iterator();
+        it = block.iterator();
         
-        CodeElement nested = it.next();
+        CodeBlock nested = it.next();
         assertThat(nested.getLineStart(), is(2));
         assertThat(nested.getLineEnd(), is(3));
         assertThat(nested.getNestedElementCount(), is(0));
@@ -125,7 +125,7 @@ public class CsvToAstConverterTest {
         assertThat(nested.getCondition(), is(new Variable("CONFIG_C")));
         assertThat(nested.getPresenceCondition(), is(condition));
         
-        CodeElement nestedNested = nested.iterateNestedElements().iterator().next();
+        CodeBlock nestedNested = nested.iterator().next();
         assertThat(nestedNested.getLineStart(), is(5));
         assertThat(nestedNested.getLineEnd(), is(6));
         assertThat(nestedNested.getNestedElementCount(), is(0));
@@ -156,14 +156,14 @@ public class CsvToAstConverterTest {
                 + "test.c;4;5;else;0;1;!(CONFIG_A) && (!(CONFIG_B));!(CONFIG_A) && (!(CONFIG_B))\n";
         
         CsvToAstConverter converter = new CsvToAstConverter(false);
-        SourceFile result = converter.convert(new File("test.c"), csv);
+        SourceFile<CodeBlock> result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
         assertThat(result.getTopElementCount(), is(3));
         
-        Iterator<CodeElement> it = result.iterator();
+        Iterator<CodeBlock> it = result.iterator();
         
-        CodeElement block = it.next();
+        CodeBlock block = it.next();
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(2));
         assertThat(block.getNestedElementCount(), is(0));
@@ -254,14 +254,14 @@ public class CsvToAstConverterTest {
         String csv = "test.c;1;2;if;0;1;__STDC_VERSION__ >= 201112L;A";
         
         CsvToAstConverter converter = new CsvToAstConverter(true);
-        SourceFile result = converter.convert(new File("test.c"), csv);
+        SourceFile<CodeBlock> result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
         assertThat(result.getTopElementCount(), is(1));
         
-        Iterator<CodeElement> it = result.iterator();
+        Iterator<CodeBlock> it = result.iterator();
         
-        CodeElement block = it.next();
+        CodeBlock block = it.next();
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(2));
         assertThat(block.getNestedElementCount(), is(0));
@@ -281,14 +281,14 @@ public class CsvToAstConverterTest {
         String csv = "test.c;1;2;if;0;1;((VAR) == 1);A";
         
         CsvToAstConverter converter = new CsvToAstConverter(true);
-        SourceFile result = converter.convert(new File("test.c"), csv);
+        SourceFile<CodeBlock> result = converter.convert(new File("test.c"), csv);
         
         assertThat(result.getPath(), is(new File("test.c")));
         assertThat(result.getTopElementCount(), is(1));
         
-        Iterator<CodeElement> it = result.iterator();
+        Iterator<CodeBlock> it = result.iterator();
         
-        CodeElement block = it.next();
+        CodeBlock block = it.next();
         assertThat(block.getLineStart(), is(1));
         assertThat(block.getLineEnd(), is(2));
         assertThat(block.getNestedElementCount(), is(0));
