@@ -28,3 +28,12 @@ This plugin is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
 
 Another license would be possible with the following restriction:
 * The plugin contains undertaker which is under GPLv3. We do not link against undertaker, so technically we are not infected by GPL. However a release under a license other than GPLv3 would require the removal of the contained undertaker.
+
+## Used Tools
+
+The following tools are used (and bundled in `res/`) by this plugin:
+
+| Tool | Version | License |
+|------|---------|---------|
+| [PilzTaker](https://github.com/SSE-LinuxAnalysis/pilztaker) | [2017-07-19 (d5175c1)](https://github.com/SSE-LinuxAnalysis/pilztaker/commit/d5175c1cb80f9b6d67815836fbeeab1b8cc20d7c) | [GPLv3](https://www.gnu.org/licenses/gpl.html) |
+| [Undertaker](https://vamos.informatik.uni-erlangen.de/trac/undertaker) | [v1.6.1](https://vamos.informatik.uni-erlangen.de/files/undertaker-1.6.1.tar.xz) | [GPLv3](https://www.gnu.org/licenses/gpl.html) |
