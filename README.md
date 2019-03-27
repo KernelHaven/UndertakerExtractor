@@ -1,7 +1,7 @@
 # UndertakerExtractor
 
 
-![Build Status](https://jenkins.sse.uni-hildesheim.de/buildStatus/icon?job=KH_UndertakerExtractor)
+![Build Status](https://jenkins-2.sse.uni-hildesheim.de/buildStatus/icon?job=KH_UndertakerExtractor)
 
 A code-model extractor for [KernelHaven](https://github.com/KernelHaven/KernelHaven).
 
@@ -13,7 +13,7 @@ This extractor finds #ifdef blocks in source files (`*.c`, `*.h`, `*.S`) and ext
 
 ## Usage
 
-Place [`UndertakerExtractor.jar`](https://jenkins.sse.uni-hildesheim.de/view/KernelHaven/job/KH_UndertakerExtractor/lastSuccessfulBuild/artifact/build/jar/UndertakerExtractor.jar) in the plugins folder of KernelHaven.
+Place [`UndertakerExtractor.jar`](https://jenkins-2.sse.uni-hildesheim.de/view/KernelHaven/job/KH_UndertakerExtractor/lastSuccessfulBuild/artifact/build/jar/UndertakerExtractor.jar) in the plugins folder of KernelHaven.
 
 To use this extractor, set `code.extractor.class` to `net.ssehub.kernel_haven.undertaker.UndertakerExtractor` in the KernelHaven properties.
 
