@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- author: moritz, kevin, Sascha El-Sharkawy -->
+<!-- Author: Adam, Sascha El-Sharkawy -->
 <project name="UndertakerExtractor" default="jenkins" basedir=".">
 	<description>A code-model extractor based on the Undertaker tool</description>
 
